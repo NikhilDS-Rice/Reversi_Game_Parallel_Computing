@@ -108,3 +108,22 @@ int main() {
     
     return 0;
 }
+void PrintBoard(Board b) {
+    printf("  1 2 3 4 5 6 7 8\n");
+    for (int row = 8; row >= 1; row--) {
+        printf("%d ", row);
+        for (int col = 1; col <= 8; col++) {
+            if (b.disks[X_BLACK] & BOARD_BIT(row, col)) {
+                printf("X ");
+            } else if (b.disks[O_WHITE] & BOARD_BIT(row, col)) {
+                printf("O ");
+            } else {
+                printf(". ");
+            }
+        }
+        printf("\n");
+    }
+    printf("\n");
+}
+
+
