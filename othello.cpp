@@ -3,6 +3,7 @@
 #include <cilk/cilk.h>
 #include <cilk/reducer_max.h>
 #include <cilk/reducer_opadd.h>
+#include <climits> // For INT_MIN
 
 #define BIT 0x1
 
@@ -232,7 +233,7 @@ int EnumerateLegalMoves(Board b, int color, Board *legal_moves)
             if (thisrow & COL8) {
                 Move m = { row, col };
                 if (FlipDisks(m, &b, color, 0, 0) > 0) {
-                    reducer_legal_moves->value |= BOARD_BIT(row, col);
+                    reducer_legal_moves->view() |= BOARD_BIT(row, col);
                     reducer_num_moves++;
                 }
             }
@@ -329,7 +330,7 @@ int NegaMaxAlgo(Board b, int color, int depth) {
 
 int CompTurn(Board *b, int color, int depth) {
     cilk::reducer_max<int> bestScore(INT_MIN);
-    cilk::reducer<cilk::op_add<Move>> bestMove({-1, -1});
+    Move bestMove = {-1, -1};
     Board legal_moves;
 
     int num_moves = EnumerateLegalMoves(*b, color, &legal_moves);
@@ -347,16 +348,16 @@ int CompTurn(Board *b, int color, int depth) {
                 int score = -NegaMaxAlgo(nextBoard, OTHERCOLOR(color), depth - 1);
                 if (score > bestScore.get_value()) {
                     bestScore.set_value(score);
-                    bestMove.set_value(m2);
+                    bestMove = m2;
                 }
             }
         }
     }
 
-    if (bestMove.get_value().row != -1 && bestMove.get_value().col != -1) {
-        printf("Computer places %c at %d, %d.\n", diskcolor[color+1], bestMove.get_value().row, bestMove.get_value().col);
-        PlaceOrFlip(bestMove.get_value(), b, color);
-        FlipDisks(bestMove.get_value(), b, color, 0, 1);
+    if (bestMove.row != -1 && bestMove.col != -1) {
+        printf("Computer places %c at %d, %d.\n", diskcolor[color+1], bestMove.row, bestMove.col);
+        PlaceOrFlip(bestMove, b, color);
+        FlipDisks(bestMove, b, color, 0, 1);
         PrintBoard(*b);
     } else {
         printf("Computer has no valid moves.\n");
