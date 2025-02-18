@@ -225,7 +225,7 @@ int EnumerateLegalMoves(Board b, int color, Board *legal_moves)
     *legal_moves = no_legal_moves;
 
     cilk::reducer_opadd<int> reducer_num_moves(0);
-    cilk::reducer<cilk::op_add<ull>> reducer_legal_moves(0);
+    cilk::reducer<cilk::opadd<ull>> reducer_legal_moves(0);
 
     cilk_for (int row = 8; row >= 1; row--) {
         ull thisrow = my_neighbor_moves & ROW8;
@@ -233,7 +233,7 @@ int EnumerateLegalMoves(Board b, int color, Board *legal_moves)
             if (thisrow & COL8) {
                 Move m = { row, col };
                 if (FlipDisks(m, &b, color, 0, 0) > 0) {
-                    reducer_legal_moves->view() |= BOARD_BIT(row, col);
+                    reducer_legal_moves->get_value() |= BOARD_BIT(row, col);
                     reducer_num_moves++;
                 }
             }
