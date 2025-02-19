@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <cilk/cilk.h>
 #include <cilk/reducer_max.h>
-#include <climits> // For INT_MIN
+#include <cilk/reducer_opadd.h>
 
 #define BIT 0x1
 
@@ -130,14 +130,15 @@ int TryFlips(Move m, Move offset, Board *b, int color, int verbose, int domove)
 
 int FlipDisks(Move m, Board *b, int color, int verbose, int domove)
 {
-    int nflips = 0;
-
-    for (int i = 0; i < noffsets; i++) {
-        int flipresult = TryFlips(m, offsets[i], b, color, verbose, domove);
-        nflips += (flipresult > 0) ? flipresult - 1 : 0;
-    }
-
-    return nflips;
+  int i;
+  int nflips = 0;
+    
+  /* try flipping disks along each of the 8 directions */
+  for(i=0;i<noffsets;i++) {
+    int flipresult = TryFlips(m,offsets[i], b, color, verbose, domove);
+    nflips += (flipresult > 0) ? flipresult - 1 : 0;
+  }
+  return nflips;
 }
 
 void ReadMove(int color, Board *b)
@@ -214,30 +215,31 @@ Board NeighborMoves(Board b, int color)
 */
 int EnumerateLegalMoves(Board b, int color, Board *legal_moves)
 {
-    static Board no_legal_moves = {0,0};
-    Board neighbors = NeighborMoves(b, color);
-    ull my_neighbor_moves = neighbors.disks[color];
-    int num_moves = 0;
-    *legal_moves = no_legal_moves;
-
-    for (int row = 8; row >= 1; row--) {
-        ull thisrow = my_neighbor_moves & ROW8;
-        for (int col = 8; thisrow && (col >= 1); col--) {
-            if (thisrow & COL8) {
-                Move m = { row, col };
-                if (FlipDisks(m, &b, color, 0, 0) > 0) {
-                    legal_moves->disks[color] |= BOARD_BIT(row, col);
-                    num_moves++;
-                }
-            }
-            thisrow >>= 1;
-        }
-        my_neighbor_moves >>= 8;
+  static Board no_legal_moves = {0,0};
+  Board neighbors = NeighborMoves(b, color);
+  ull my_neighbor_moves = neighbors.disks[color];
+  int row;
+  int col;
+    
+  int num_moves = 0;
+  *legal_moves = no_legal_moves;
+    
+  for(row=8; row >=1; row--) {
+    ull thisrow = my_neighbor_moves & ROW8;
+    for(col=8; thisrow && (col >= 1); col--) {
+      if (thisrow & COL8) {
+    Move m = { row, col };
+    if (FlipDisks(m, &b, color, 0, 0) > 0) {
+      legal_moves->disks[color] |= BOARD_BIT(row,col);
+      num_moves++;
     }
-
-    return num_moves;
+      }
+      thisrow >>= 1;
+    }
+    my_neighbor_moves >>= 8;
+  }
+  return num_moves;
 }
-
 
 int HumanTurn(Board *b, int color)
 {
@@ -251,16 +253,12 @@ int HumanTurn(Board *b, int color)
 
 int CountBitsOnBoard(Board *b, int color)
 {
-    ull bits = b->disks[color];
-    int ndisks = 0;
-
-    for (int i = 0; i < 64; i++) {
-        if (bits & (1ULL << i)) {
-            ndisks += 1;
-        }
-    }
-
-    return ndisks;
+  ull bits = b->disks[color];
+  int ndisks = 0;
+  for (; bits ; ndisks++) {
+    bits &= bits - 1; // clear the least significant bit set
+  }
+  return ndisks;
 }
 
 void EndGame(Board b)
@@ -317,7 +315,7 @@ int NegaMaxAlgo(Board b, int color, int depth) {
 
 int CompTurn(Board *b, int color, int depth) {
     cilk::reducer_max<int> bestScore(INT_MIN);
-    Move bestMove = {-1, -1};
+    cilk::reducer<cilk::op_add<Move>> bestMove({-1, -1});
     Board legal_moves;
 
     int num_moves = EnumerateLegalMoves(*b, color, &legal_moves);
@@ -326,7 +324,7 @@ int CompTurn(Board *b, int color, int depth) {
         return 0;
     }
 
-    for (int row = 8; row >= 1; row--) {
+    cilk_for (int row = 8; row >= 1; row--) {
         for (int col = 8; col >= 1; col--) {
             if (legal_moves.disks[color] & BOARD_BIT(row, col)) {
                 Board nextBoard = *b;
@@ -335,16 +333,16 @@ int CompTurn(Board *b, int color, int depth) {
                 int score = -NegaMaxAlgo(nextBoard, OTHERCOLOR(color), depth - 1);
                 if (score > bestScore.get_value()) {
                     bestScore.set_value(score);
-                    bestMove = m2;
+                    bestMove.set_value(m2);
                 }
             }
         }
     }
 
-    if (bestMove.row != -1 && bestMove.col != -1) {
-        printf("Computer places %c at %d, %d.\n", diskcolor[color+1], bestMove.row, bestMove.col);
-        PlaceOrFlip(bestMove, b, color);
-        FlipDisks(bestMove, b, color, 0, 1);
+    if (bestMove.get_value().row != -1 && bestMove.get_value().col != -1) {
+        printf("Computer places %c at %d, %d.\n", diskcolor[color+1], bestMove.get_value().row, bestMove.get_value().col);
+        PlaceOrFlip(bestMove.get_value(), b, color);
+        FlipDisks(bestMove.get_value(), b, color, 0, 1);
         PrintBoard(*b);
     } else {
         printf("Computer has no valid moves.\n");
