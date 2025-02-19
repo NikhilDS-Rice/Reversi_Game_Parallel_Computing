@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <iostream>
 #include <cilk/cilk.h>
 #include <cilk/reducer_max.h>
 #include <climits>
-#include <iostream>
 
 #define BIT 0x1
 
@@ -252,6 +252,35 @@ int HumanTurn(Board *b, int color)
   } else return 0;
 }
 
+// function to check if the game is over/concluded
+bool isGameOver(Board b)
+{
+  //this loop checks if the board is fully occupied with all bits set to 1
+  if((b.disks[X_BLACK] | b.disks[O_WHITE]) == 0xFFFFFFFFFFFFFFFF)
+  {
+    return true;
+  }
+
+  Board legal_moves_b;
+  Board legal_moves_w;
+  
+  // We will use the given EnumerateLegalMoves function to check if both our players dont have legal move our game will end.
+  if (EnumerateLegalMoves(b, X_BLACK, &legal_moves_b) == 0 && EnumerateLegalMoves(b, O_WHITE, &legal_moves_w) == 0)
+  { 
+    return true;
+  }
+
+  return false;
+
+}
+
+// This function will make a move in the game for a player at a specific location. It will make use of the already
+// given functions PlaceorFlip() and FlipDisks().
+void MakeMove(Board* b, Move move, int color) {
+    PlaceOrFlip(move, b, color);
+    FlipDisks(move, b, color, 0, 1);
+}
+
 int CountBitsOnBoard(Board *b, int color)
 {
   ull bits = b->disks[color];
@@ -260,6 +289,17 @@ int CountBitsOnBoard(Board *b, int color)
     bits &= bits - 1; // clear the least significant bit set
   }
   return ndisks;
+}
+
+// This function will calculate a heuristic score by comparing the number of disks on the board
+//positive count value means opponent has less disks, negative value means opponent has more disks and zero count
+// value means equal number of disks.
+int EvaluateBoard(Board b, int color)
+{
+  int count_a = CountBitsOnBoard(&b, color);
+  int count_b = CountBitsOnBoard(&b, OTHERCOLOR(color)); 
+
+  return count_a - count_b;
 }
 
 void EndGame(Board b)
@@ -306,15 +346,83 @@ int NegaMaxAlgo(Board b, int color, int depth) {
   return maxScore.get_value();
 }
 
+//the computer turn will use the negamax algorithm to select the best possible move
+int CompTurn(Board *b, int color, int depth) {
+
+    int bestScore = INT_MIN;
+    Move bestMove = {-1, -1};
+    Board legal_moves;
+
+    int num_moves = EnumerateLegalMoves(*b, color, &legal_moves);
+    if (num_moves == 0) {
+        printf("Computer has no valid moves.\n");
+        return 0;
+    }
+
+    for (int row = 8; row >= 1; row--) {
+        for (int col = 8; col >= 1; col--) {
+            if (legal_moves.disks[color] & BOARD_BIT(row, col)) {
+                Board nextBoard = *b;
+                Move m2 = {row, col};
+                MakeMove(&nextBoard, m2, color);
+                int score = -NegaMaxAlgo(nextBoard, OTHERCOLOR(color), depth - 1);
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestMove = m2;
+                }
+            }
+        }
+    }
+    if (bestMove.row != -1 && bestMove.col != -1) {
+        printf("Computer places %c at %d, %d .\n",diskcolor[color+1], bestMove.row, bestMove.col);
+        PlaceOrFlip(bestMove, b, color);
+        FlipDisks(bestMove, b, color, 0, 1);
+        PrintBoard(*b);
+    } else {
+        printf("Computer has no valid moves.\n");
+    }
+  return 1;
+}
+
 int main (int argc, const char * argv[]) 
 {
   Board gameboard = start;
   int move_possible;
+  char player1, player2;
+  int depth1, depth2;
+
+  printf("Enter the first player h for human, c for computer: ");
+  scanf(" %c", &player1);
+  printf("Enter depth of the first player: ");
+  scanf("%d",&depth1);
+  printf("Enter the second player h for human, c for computer: ");
+  scanf(" %c", &player2);
+  printf("Enter depth of the second player: ");
+  scanf("%d", &depth2);
+
   PrintBoard(gameboard);
   do {
-    move_possible = 
-      HumanTurn(&gameboard, X_BLACK) | 
-      HumanTurn(&gameboard, O_WHITE);
+
+    if(player1 == 'c'){
+      move_possible = CompTurn(&gameboard, X_BLACK, depth1);
+    } 
+    else if(player1 == 'h'){
+      move_possible = HumanTurn(&gameboard, X_BLACK);
+    }
+
+    if(isGameOver(gameboard)) break;
+
+    if(player2 == 'c'){
+      move_possible |= CompTurn(&gameboard, O_WHITE, depth2);
+    } 
+    else if (player2 == 'h'){
+      move_possible |= HumanTurn(&gameboard, O_WHITE);
+    }
+
+    // move_possible = 
+    //   // HumanTurn(&gameboard, X_BLACK) 
+    //   CompTurn(&gameboard, X_BLACK, depth)| 
+    //   CompTurn(&gameboard, O_WHITE, depth);
   } while(move_possible);
 	
   EndGame(gameboard);
