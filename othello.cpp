@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <cilk/cilk.h>
 #include <cilk/reducer_max.h>
-#include <cilk/reducer_opadd.h>
 #include <climits> // For INT_MIN
 
 #define BIT 0x1
@@ -133,14 +132,11 @@ int FlipDisks(Move m, Board *b, int color, int verbose, int domove)
 {
     int nflips = 0;
 
-    cilk::reducer_opadd<int> reducer_nflips(0);
-
-    cilk_for (int i = 0; i < noffsets; i++) {
+    for (int i = 0; i < noffsets; i++) {
         int flipresult = TryFlips(m, offsets[i], b, color, verbose, domove);
-        reducer_nflips += (flipresult > 0) ? flipresult - 1 : 0;
+        nflips += (flipresult > 0) ? flipresult - 1 : 0;
     }
 
-    nflips = reducer_nflips.get_value();
     return nflips;
 }
 
@@ -224,26 +220,20 @@ int EnumerateLegalMoves(Board b, int color, Board *legal_moves)
     int num_moves = 0;
     *legal_moves = no_legal_moves;
 
-    cilk::reducer_opadd<int> reducer_num_moves(0);
-    cilk::reducer<cilk::op_add<ull>> reducer_legal_moves(0);
-
-    cilk_for (int row = 8; row >= 1; row--) {
+    for (int row = 8; row >= 1; row--) {
         ull thisrow = my_neighbor_moves & ROW8;
         for (int col = 8; thisrow && (col >= 1); col--) {
             if (thisrow & COL8) {
                 Move m = { row, col };
                 if (FlipDisks(m, &b, color, 0, 0) > 0) {
-                    reducer_legal_moves->view() |= BOARD_BIT(row, col);
-                    reducer_num_moves++;
+                    legal_moves->disks[color] |= BOARD_BIT(row, col);
+                    num_moves++;
                 }
             }
             thisrow >>= 1;
         }
         my_neighbor_moves >>= 8;
     }
-
-    legal_moves->disks[color] = reducer_legal_moves.get_value();
-    num_moves = reducer_num_moves.get_value();
 
     return num_moves;
 }
@@ -264,15 +254,12 @@ int CountBitsOnBoard(Board *b, int color)
     ull bits = b->disks[color];
     int ndisks = 0;
 
-    cilk::reducer_opadd<int> reducer_ndisks(0);
-
-    cilk_for (int i = 0; i < 64; i++) {
+    for (int i = 0; i < 64; i++) {
         if (bits & (1ULL << i)) {
-            reducer_ndisks += 1;
+            ndisks += 1;
         }
     }
 
-    ndisks = reducer_ndisks.get_value();
     return ndisks;
 }
 
@@ -329,7 +316,7 @@ int NegaMaxAlgo(Board b, int color, int depth) {
 }
 
 int CompTurn(Board *b, int color, int depth) {
-    cilk::reducer_max<int> bestScore(INT_MIN);
+    int bestScore = INT_MIN;
     Move bestMove = {-1, -1};
     Board legal_moves;
 
@@ -339,15 +326,15 @@ int CompTurn(Board *b, int color, int depth) {
         return 0;
     }
 
-    cilk_for (int row = 8; row >= 1; row--) {
+    for (int row = 8; row >= 1; row--) {
         for (int col = 8; col >= 1; col--) {
             if (legal_moves.disks[color] & BOARD_BIT(row, col)) {
                 Board nextBoard = *b;
                 Move m2 = {row, col};
                 PlaceOrFlip(m2, &nextBoard, color);
                 int score = -NegaMaxAlgo(nextBoard, OTHERCOLOR(color), depth - 1);
-                if (score > bestScore.get_value()) {
-                    bestScore.set_value(score);
+                if (score > bestScore) {
+                    bestScore = score;
                     bestMove = m2;
                 }
             }
