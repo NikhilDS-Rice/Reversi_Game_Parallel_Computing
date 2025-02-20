@@ -1,0 +1,29 @@
+Manifest-Version: 1.0
+Export-Package: edu.rice.cs.hpc.viewer.editor,edu.rice.cs.hpc.viewer.e
+ xperiment,edu.rice.cs.hpc.viewer.framework,edu.rice.cs.hpc.viewer.hel
+ p,edu.rice.cs.hpc.viewer.metric,edu.rice.cs.hpc.viewer.scope,edu.rice
+ .cs.hpc.viewer.util,edu.rice.cs.hpc.viewer.window
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: hpcviewer.jar
+Bundle-Name: hpcviewer
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: org.eclipse.ui,edu.rice.cs.hpc.data,org.eclipse.ui.ide
+ .source
+Bundle-Vendor: Rice University
+Bundle-Version: 5.5.1.201805181432
+Bundle-ManifestVersion: 2
+Bundle-Activator: edu.rice.cs.hpc.viewer.framework.Activator
+Bundle-SymbolicName: edu.rice.cs.hpc.viewer; singleton:=true
+Import-Package: com.graphbuilder.math,edu.rice.cs.hpc.common.ui,edu.ri
+ ce.cs.hpc.common.util,edu.rice.cs.hpc.filter,edu.rice.cs.hpc.filter.s
+ ervice,edu.rice.cs.hpc.filter.view,org.eclipse.core.filesystem,org.ec
+ lipse.core.resources,org.eclipse.core.runtime,org.eclipse.core.runtim
+ e.jobs,org.eclipse.core.runtime.preferences,org.eclipse.equinox.app,o
+ rg.eclipse.jface.text,org.eclipse.jface.util,org.eclipse.swt.graphics
+ ,org.eclipse.ui.actions,org.eclipse.ui.application,org.eclipse.ui.dia
+ logs,org.eclipse.ui.editors.text,org.eclipse.ui.ide,org.eclipse.ui.pa
+ rt,org.eclipse.ui.plugin,org.eclipse.ui.preferences,org.eclipse.ui.te
+ xteditor,org.osgi.framework,org.osgi.service.prefs,org.swtchart,org.s
+ wtchart.ext
+
+
