@@ -350,10 +350,10 @@ int CompTurn(Board *b, int color, int depth) {
   }
   
   if (bestMove.row != -1 && bestMove.col != -1) {
-      printf("Computer places %c at %d, %d.\n", "XO"[color], bestMove.row, bestMove.col);
+      printf("Computer %c plays at %d, %d.\n", "XO"[color], bestMove.row, bestMove.col);
       PlaceOrFlip(bestMove, b, color);
       FlipDisks(bestMove, b, color, 0, 1);
-      //PrintBoard(*b);
+      PrintBoard(*b);
   } else {
       printf("Computer has no valid moves.\n");
   }
@@ -370,11 +370,11 @@ int main (int argc, const char * argv[])
   int d1, d2; 
   printf("Choose first player: Enter h for human, c for computer: ");
   scanf(" %c", &p1);  
-  printf("Choose depth of the first player: Enter between [1-7] ");
+  printf("Enter depth of the first player:");
   scanf("%d", &d1);
   printf("Choose second player: Enter h for human, c for computer: ");
   scanf(" %c", &p2);
-  printf("Choose depth of the second player: Enter between [1-7] ");
+  printf("Enter depth of the second player:");
   scanf("%d", &d2);
   PrintBoard(gameboard);
   do {
@@ -391,7 +391,7 @@ int main (int argc, const char * argv[])
     else if(p2 == 'h'){
       move_possible |= HumanTurn(&gameboard, O_WHITE);
     }
-    PrintBoard(gameboard);
+  
   } while(move_possible);
     
   EndGame(gameboard);
