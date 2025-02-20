@@ -353,6 +353,7 @@ int CompTurn(Board *b, int color, int depth) {
       printf("Computer places %c at %d, %d.\n", "XO"[color], bestMove.row, bestMove.col);
       PlaceOrFlip(bestMove, b, color);
       FlipDisks(bestMove, b, color, 0, 1);
+      PrintBoard(*b);
   } else {
       printf("Computer has no valid moves.\n");
   }
