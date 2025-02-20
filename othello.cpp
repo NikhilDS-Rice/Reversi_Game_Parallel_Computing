@@ -277,7 +277,6 @@ void EndGame(Board b)
 // Added Negamax Algorithm
 int NegaMaxAlgo(Board b, int color, int depth)
 {
-  // Base case if the search has reached maximum depth or if the game is over we will return the score.
     Board legal_moves_b, legal_moves_w;
     if (depth == 0 || ((b.disks[X_BLACK] | b.disks[O_WHITE]) == 0xFFFFFFFFFFFFFFFF) || 
         (EnumerateLegalMoves(b, X_BLACK, &legal_moves_b) == 0 && EnumerateLegalMoves(b, O_WHITE, &legal_moves_w) == 0)){
@@ -293,7 +292,7 @@ int NegaMaxAlgo(Board b, int color, int depth)
       return - NegaMaxAlgo(b, OTHERCOLOR(color), depth - 1);
     }
 
-    // int maxScore = INT_MIN;
+
 
     // cilk reducer for maxscore.
     cilk::reducer_max<int> maxScore(INT_MIN);
@@ -307,11 +306,9 @@ int NegaMaxAlgo(Board b, int color, int depth)
           Move m1 = {row, col};
           PlaceOrFlip(m1, &next, color);
           FlipDisks(m1, &next, color, 0, 1);
-          int score = -NegaMaxAlgo(next, OTHERCOLOR(color), depth - 1); // here we will recurssively call negamax to go deeper into the game tree
-          maxScore.calc_max(score); // keep track of the max score
-          // if(score >= maxScore){
-          //   maxScore = score;
-          // }
+          int score = -NegaMaxAlgo(next, OTHERCOLOR(color), depth - 1); // recursive call to negamax algorithm.
+          maxScore.calc_max(score); // update the max score.
+
         }
       }
     }
@@ -319,13 +316,13 @@ int NegaMaxAlgo(Board b, int color, int depth)
 }
 
 
-// Added Computer Turn using Cilk Plus
+// Added Computer Turn Function
 int CompTurn(Board *b, int color, int depth) {
   Board legal_moves;
   int num_moves = EnumerateLegalMoves(*b, color, &legal_moves);
   
   if (num_moves == 0) {
-      printf("Computer has no valid moves.\n");
+      printf("Computer %c has no valid moves.\n", "XO"[color]);
       return 0;
   }
   
@@ -355,7 +352,7 @@ int CompTurn(Board *b, int color, int depth) {
       FlipDisks(bestMove, b, color, 0, 1);
       PrintBoard(*b);
   } else {
-      printf("Computer has no valid moves.\n");
+      printf("Computer %c has no valid moves.\n", "XO"[color]);
   }
   
   return 1;
@@ -368,11 +365,11 @@ int main (int argc, const char * argv[])
   int move_possible;
   char p1, p2; 
   int d1, d2; 
-  printf("Choose first player: Enter h for human, c for computer: ");
+  printf("Choose first player 'X': Enter h for human, c for computer: ");
   scanf(" %c", &p1);  
   printf("Enter depth of the first player:");
   scanf("%d", &d1);
-  printf("Choose second player: Enter h for human, c for computer: ");
+  printf("Choose second player 'O': Enter h for human, c for computer: ");
   scanf(" %c", &p2);
   printf("Enter depth of the second player:");
   scanf("%d", &d2);
