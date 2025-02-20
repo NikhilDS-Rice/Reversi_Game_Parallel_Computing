@@ -355,7 +355,7 @@ int CompTurn(Board *b, int color, int depth) {
       FlipDisks(bestMove, b, color, 0, 1);
       PrintBoard(*b);
   } else {
-      printf("Computer %c has no valid moves.\n","XO"[color]);
+      printf("Computer has no valid moves.\n");
   }
   
   return 1;
