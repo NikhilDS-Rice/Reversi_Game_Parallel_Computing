@@ -274,48 +274,7 @@ void EndGame(Board b)
   }
 }
 
-// Added Computer Turn using Cilk Plus
-int CompTurn(Board *b, int color, int depth) {
-  Board legal_moves;
-  int num_moves = EnumerateLegalMoves(*b, color, &legal_moves);
-  
-  if (num_moves == 0) {
-      printf("Computer has no valid moves.\n");
-      return 0;
-  }
-  
-  cilk::reducer_max<int> bestScore(INT_MIN);
-  Move bestMove = {-1, -1};
-  
-  cilk_for(int row = 1; row <= 8; row++) {
-      for (int col = 1; col <= 8; col++) {
-          if (legal_moves.disks[color] & BOARD_BIT(row, col)) {
-              Board next = *b;
-              Move m2 = {row, col};
-              PlaceOrFlip(m2, &next, color);
-              FlipDisks(m2, &next, color, 0, 1);
-              int score = -NegaMaxAlgo(next, OTHERCOLOR(color), depth - 1);
-              
-              if (score > bestScore.get_value()) {
-                  bestScore.calc_max(score);
-                  bestMove = m2;
-              }
-          }
-      }
-  }
-  
-  if (bestMove.row != -1 && bestMove.col != -1) {
-      printf("Computer places %c at %d, %d.\n", "XO"[color], bestMove.row, bestMove.col);
-      PlaceOrFlip(bestMove, b, color);
-      FlipDisks(bestMove, b, color, 0, 1);
-  } else {
-      printf("Computer has no valid moves.\n");
-  }
-  
-  return 1;
-}
-
-//This algorithm is the variant of minimax, where one player's gain is the other player's loss.
+//Added Negamax Algorithm
 int NegaMaxAlgo(Board b, int color, int depth)
 {
   // Base case if the search has reached maximum depth or if the game is over we will return the score.
@@ -357,6 +316,49 @@ int NegaMaxAlgo(Board b, int color, int depth)
     }
     return maxScore.get_value(); // return the best score.
 }
+
+
+// Added Computer Turn using Cilk Plus
+int CompTurn(Board *b, int color, int depth) {
+  Board legal_moves;
+  int num_moves = EnumerateLegalMoves(*b, color, &legal_moves);
+  
+  if (num_moves == 0) {
+      printf("Computer has no valid moves.\n");
+      return 0;
+  }
+  
+  cilk::reducer_max<int> bestScore(INT_MIN);
+  Move bestMove = {-1, -1};
+  
+  cilk_for(int row = 1; row <= 8; row++) {
+      for (int col = 1; col <= 8; col++) {
+          if (legal_moves.disks[color] & BOARD_BIT(row, col)) {
+              Board next = *b;
+              Move m2 = {row, col};
+              PlaceOrFlip(m2, &next, color);
+              FlipDisks(m2, &next, color, 0, 1);
+              int score = -NegaMaxAlgo(next, OTHERCOLOR(color), depth - 1);
+              
+              if (score > bestScore.get_value()) {
+                  bestScore.calc_max(score);
+                  bestMove = m2;
+              }
+          }
+      }
+  }
+  
+  if (bestMove.row != -1 && bestMove.col != -1) {
+      printf("Computer places %c at %d, %d.\n", "XO"[color], bestMove.row, bestMove.col);
+      PlaceOrFlip(bestMove, b, color);
+      FlipDisks(bestMove, b, color, 0, 1);
+  } else {
+      printf("Computer has no valid moves.\n");
+  }
+  
+  return 1;
+}
+
 
 int main (int argc, const char * argv[]) 
 {
