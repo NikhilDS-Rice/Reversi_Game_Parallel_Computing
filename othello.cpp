@@ -274,13 +274,14 @@ void EndGame(Board b)
   }
 }
 
-//Added Negamax Algorithm
+// Added Negamax Algorithm
 int NegaMaxAlgo(Board b, int color, int depth)
 {
   // Base case if the search has reached maximum depth or if the game is over we will return the score.
+    Board legal_moves_b, legal_moves_w;
     if (depth == 0 || ((b.disks[X_BLACK] | b.disks[O_WHITE]) == 0xFFFFFFFFFFFFFFFF) || 
         (EnumerateLegalMoves(b, X_BLACK, &legal_moves_b) == 0 && EnumerateLegalMoves(b, O_WHITE, &legal_moves_w) == 0)){
-      return EvaluateBoard(b, color);
+      return CountBitsOnBoard(&b, color) - CountBitsOnBoard(&b, OTHERCOLOR(color));
     }
 
     Board legal_moves;
