@@ -327,7 +327,7 @@ int CompTurn(Board *b, int color, int depth) {
   }
   
   cilk::reducer_max<int> bestScore(INT_MIN);
-  Move bestMove = {-1, -1};
+  cilk::reducer<cilk::op_assign<Move>> bestMove({-1, -1}); // Fix race condition
   
   cilk_for(int row = 1; row <= 8; row++) {
       for (int col = 1; col <= 8; col++) {
@@ -340,16 +340,16 @@ int CompTurn(Board *b, int color, int depth) {
               
               if (score > bestScore.get_value()) {
                   bestScore.calc_max(score);
-                  bestMove = m2;
+                  bestMove = m2; // Safe update using reducer
               }
           }
       }
   }
   
-  if (bestMove.row != -1 && bestMove.col != -1) {
-      printf("Computer %c plays at %d, %d.\n", "XO"[color], bestMove.row, bestMove.col);
-      PlaceOrFlip(bestMove, b, color);
-      FlipDisks(bestMove, b, color, 0, 1);
+  if (bestMove.get_value().row != -1 && bestMove.get_value().col != -1) {
+      printf("Computer %c plays at %d, %d.\n", "XO"[color], bestMove.get_value().row, bestMove.get_value().col);
+      PlaceOrFlip(bestMove.get_value(), b, color);
+      FlipDisks(bestMove.get_value(), b, color, 0, 1);
       PrintBoard(*b);
   } else {
       printf("Computer %c has no valid moves.\n", "XO"[color]);
