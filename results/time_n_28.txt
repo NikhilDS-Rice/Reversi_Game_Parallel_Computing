@@ -1,0 +1,617 @@
+Choose first player 'X': Enter h for human, c for computer: Enter depth of the first player:Choose second player 'O': Enter h for human, c for computer: Enter depth of the second player:  1 2 3 4 5 6 7 8
+1 . . . . . . . .
+2 . . . . . . . .
+3 . . . . . . . .
+4 . . . O X . . .
+5 . . . X O . . .
+6 . . . . . . . .
+7 . . . . . . . .
+8 . . . . . . . .
+Computer X plays at 5, 6.
+  1 2 3 4 5 6 7 8
+1 . . . . . . . .
+2 . . . . . . . .
+3 . . . . . . . .
+4 . . . O X . . .
+5 . . . X X X . .
+6 . . . . . . . .
+7 . . . . . . . .
+8 . . . . . . . .
+Computer O plays at 4, 6.
+  1 2 3 4 5 6 7 8
+1 . . . . . . . .
+2 . . . . . . . .
+3 . . . . . . . .
+4 . . . O O O . .
+5 . . . X X X . .
+6 . . . . . . . .
+7 . . . . . . . .
+8 . . . . . . . .
+Computer X plays at 3, 3.
+  1 2 3 4 5 6 7 8
+1 . . . . . . . .
+2 . . . . . . . .
+3 . . X . . . . .
+4 . . . X O O . .
+5 . . . X X X . .
+6 . . . . . . . .
+7 . . . . . . . .
+8 . . . . . . . .
+Computer O plays at 6, 6.
+  1 2 3 4 5 6 7 8
+1 . . . . . . . .
+2 . . . . . . . .
+3 . . X . . . . .
+4 . . . X O O . .
+5 . . . X X O . .
+6 . . . . . O . .
+7 . . . . . . . .
+8 . . . . . . . .
+Computer X plays at 5, 7.
+  1 2 3 4 5 6 7 8
+1 . . . . . . . .
+2 . . . . . . . .
+3 . . X . . . . .
+4 . . . X O O . .
+5 . . . X X X X .
+6 . . . . . O . .
+7 . . . . . . . .
+8 . . . . . . . .
+Computer O plays at 6, 3.
+  1 2 3 4 5 6 7 8
+1 . . . . . . . .
+2 . . . . . . . .
+3 . . X . . . . .
+4 . . . X O O . .
+5 . . . O X X X .
+6 . . O . . O . .
+7 . . . . . . . .
+8 . . . . . . . .
+Computer X plays at 5, 3.
+  1 2 3 4 5 6 7 8
+1 . . . . . . . .
+2 . . . . . . . .
+3 . . X . . . . .
+4 . . . X O O . .
+5 . . X X X X X .
+6 . . O . . O . .
+7 . . . . . . . .
+8 . . . . . . . .
+Computer O plays at 6, 8.
+  1 2 3 4 5 6 7 8
+1 . . . . . . . .
+2 . . . . . . . .
+3 . . X . . . . .
+4 . . . X O O . .
+5 . . X X X X O .
+6 . . O . . O . O
+7 . . . . . . . .
+8 . . . . . . . .
+Computer X plays at 7, 3.
+  1 2 3 4 5 6 7 8
+1 . . . . . . . .
+2 . . . . . . . .
+3 . . X . . . . .
+4 . . . X O O . .
+5 . . X X X X O .
+6 . . X . . O . O
+7 . . X . . . . .
+8 . . . . . . . .
+Computer O plays at 6, 4.
+  1 2 3 4 5 6 7 8
+1 . . . . . . . .
+2 . . . . . . . .
+3 . . X . . . . .
+4 . . . X O O . .
+5 . . X X O X O .
+6 . . X O . O . O
+7 . . X . . . . .
+8 . . . . . . . .
+Computer X plays at 7, 7.
+  1 2 3 4 5 6 7 8
+1 . . . . . . . .
+2 . . . . . . . .
+3 . . X . . . . .
+4 . . . X O O . .
+5 . . X X X X O .
+6 . . X O . X . O
+7 . . X . . . X .
+8 . . . . . . . .
+Computer O plays at 4, 3.
+  1 2 3 4 5 6 7 8
+1 . . . . . . . .
+2 . . . . . . . .
+3 . . X . . . . .
+4 . . O O O O . .
+5 . . X X X X O .
+6 . . X O . X . O
+7 . . X . . . X .
+8 . . . . . . . .
+Computer X plays at 3, 4.
+  1 2 3 4 5 6 7 8
+1 . . . . . . . .
+2 . . . . . . . .
+3 . . X X . . . .
+4 . . O X X O . .
+5 . . X X X X O .
+6 . . X O . X . O
+7 . . X . . . X .
+8 . . . . . . . .
+Computer O plays at 8, 3.
+  1 2 3 4 5 6 7 8
+1 . . . . . . . .
+2 . . . . . . . .
+3 . . X X . . . .
+4 . . O X X O . .
+5 . . O X X X O .
+6 . . O O . X . O
+7 . . O . . . X .
+8 . . O . . . . .
+Computer X plays at 5, 8.
+  1 2 3 4 5 6 7 8
+1 . . . . . . . .
+2 . . . . . . . .
+3 . . X X . . . .
+4 . . O X X O . .
+5 . . O X X X X X
+6 . . O O . X . O
+7 . . O . . . X .
+8 . . O . . . . .
+Computer O plays at 2, 4.
+  1 2 3 4 5 6 7 8
+1 . . . . . . . .
+2 . . . O . . . .
+3 . . X O . . . .
+4 . . O O X O . .
+5 . . O O X X X X
+6 . . O O . X . O
+7 . . O . . . X .
+8 . . O . . . . .
+Computer X plays at 7, 2.
+  1 2 3 4 5 6 7 8
+1 . . . . . . . .
+2 . . . O . . . .
+3 . . X O . . . .
+4 . . O O X O . .
+5 . . O X X X X X
+6 . . X O . X . O
+7 . X O . . . X .
+8 . . O . . . . .
+Computer O plays at 4, 8.
+  1 2 3 4 5 6 7 8
+1 . . . . . . . .
+2 . . . O . . . .
+3 . . X O . . . .
+4 . . O O X O . O
+5 . . O X X X X O
+6 . . X O . X . O
+7 . X O . . . X .
+8 . . O . . . . .
+Computer X plays at 5, 2.
+  1 2 3 4 5 6 7 8
+1 . . . . . . . .
+2 . . . O . . . .
+3 . . X O . . . .
+4 . . O O X O . O
+5 . X X X X X X O
+6 . . X O . X . O
+7 . X O . . . X .
+8 . . O . . . . .
+Computer O plays at 6, 5.
+  1 2 3 4 5 6 7 8
+1 . . . . . . . .
+2 . . . O . . . .
+3 . . X O . . . .
+4 . . O O X O . O
+5 . X X O X X X O
+6 . . X O O X . O
+7 . X O . . . X .
+8 . . O . . . . .
+Computer X plays at 2, 5.
+  1 2 3 4 5 6 7 8
+1 . . . . . . . .
+2 . . . O X . . .
+3 . . X X . . . .
+4 . . X O X O . O
+5 . X X O X X X O
+6 . . X O O X . O
+7 . X O . . . X .
+8 . . O . . . . .
+Computer O plays at 3, 6.
+  1 2 3 4 5 6 7 8
+1 . . . . . . . .
+2 . . . O X . . .
+3 . . X X . O . .
+4 . . X O O O . O
+5 . X X O X X X O
+6 . . X O O X . O
+7 . X O . . . X .
+8 . . O . . . . .
+Computer X plays at 2, 6.
+  1 2 3 4 5 6 7 8
+1 . . . . . . . .
+2 . . . O X X . .
+3 . . X X . X . .
+4 . . X O O X . O
+5 . X X O X X X O
+6 . . X O O X . O
+7 . X O . . . X .
+8 . . O . . . . .
+Computer O plays at 2, 7.
+  1 2 3 4 5 6 7 8
+1 . . . . . . . .
+2 . . . O O O O .
+3 . . X X . O . .
+4 . . X O O X . O
+5 . X X O X X X O
+6 . . X O O X . O
+7 . X O . . . X .
+8 . . O . . . . .
+Computer X plays at 1, 6.
+  1 2 3 4 5 6 7 8
+1 . . . . . X . .
+2 . . . O X X O .
+3 . . X X . X . .
+4 . . X O O X . O
+5 . X X O X X X O
+6 . . X O O X . O
+7 . X O . . . X .
+8 . . O . . . . .
+Computer O plays at 8, 8.
+  1 2 3 4 5 6 7 8
+1 . . . . . X . .
+2 . . . O X X O .
+3 . . X X . X . .
+4 . . X O O X . O
+5 . X X O O X X O
+6 . . X O O O . O
+7 . X O . . . O .
+8 . . O . . . . O
+Computer X plays at 2, 8.
+  1 2 3 4 5 6 7 8
+1 . . . . . X . .
+2 . . . O X X X X
+3 . . X X . X . .
+4 . . X O O X . O
+5 . X X O O X X O
+6 . . X O O O . O
+7 . X O . . . O .
+8 . . O . . . . O
+Computer O plays at 3, 5.
+  1 2 3 4 5 6 7 8
+1 . . . . . X . .
+2 . . . O X X X X
+3 . . X X O X . .
+4 . . X O O O . O
+5 . X X O O X O O
+6 . . X O O O . O
+7 . X O . . . O .
+8 . . O . . . . O
+Computer X plays at 7, 5.
+  1 2 3 4 5 6 7 8
+1 . . . . . X . .
+2 . . . O X X X X
+3 . . X X X X . .
+4 . . X O X O . O
+5 . X X O X X O O
+6 . . X X X O . O
+7 . X O . X . O .
+8 . . O . . . . O
+Computer O plays at 2, 3.
+  1 2 3 4 5 6 7 8
+1 . . . . . X . .
+2 . . O O X X X X
+3 . . O X X X . .
+4 . . O O X O . O
+5 . X O O X X O O
+6 . . O X X O . O
+7 . X O . X . O .
+8 . . O . . . . O
+Computer X plays at 1, 2.
+  1 2 3 4 5 6 7 8
+1 . X . . . X . .
+2 . . X O X X X X
+3 . . O X X X . .
+4 . . O O X O . O
+5 . X O O X X O O
+6 . . O X X O . O
+7 . X O . X . O .
+8 . . O . . . . O
+Computer O plays at 1, 7.
+  1 2 3 4 5 6 7 8
+1 . X . . . X O .
+2 . . X O X O X X
+3 . . O X O X . .
+4 . . O O X O . O
+5 . X O O X X O O
+6 . . O X X O . O
+7 . X O . X . O .
+8 . . O . . . . O
+Computer X plays at 1, 8.
+  1 2 3 4 5 6 7 8
+1 . X . . . X X X
+2 . . X O X O X X
+3 . . O X O X . .
+4 . . O O X O . O
+5 . X O O X X O O
+6 . . O X X O . O
+7 . X O . X . O .
+8 . . O . . . . O
+Computer O plays at 8, 5.
+  1 2 3 4 5 6 7 8
+1 . X . . . X X X
+2 . . X O X O X X
+3 . . O X O X . .
+4 . . O O O O . O
+5 . X O O O X O O
+6 . . O X O O . O
+7 . X O . O . O .
+8 . . O . O . . O
+Computer X plays at 3, 7.
+  1 2 3 4 5 6 7 8
+1 . X . . . X X X
+2 . . X O X O X X
+3 . . O X O X X .
+4 . . O O O X . O
+5 . X O O X X O O
+6 . . O X O O . O
+7 . X O . O . O .
+8 . . O . O . . O
+Computer O plays at 1, 3.
+  1 2 3 4 5 6 7 8
+1 . X O . . X X X
+2 . . O O X O X X
+3 . . O X O X X .
+4 . . O O O X . O
+5 . X O O X X O O
+6 . . O X O O . O
+7 . X O . O . O .
+8 . . O . O . . O
+Computer X plays at 8, 6.
+  1 2 3 4 5 6 7 8
+1 . X O . . X X X
+2 . . O O X O X X
+3 . . O X O X X .
+4 . . O O O X . O
+5 . X O O X X O O
+6 . . O X O O . O
+7 . X O . X . O .
+8 . . O . O X . O
+Computer O plays at 4, 1.
+  1 2 3 4 5 6 7 8
+1 . X O . . X X X
+2 . . O O X O X X
+3 . . O X O X X .
+4 O . O O O X . O
+5 . O O O X X O O
+6 . . O X O O . O
+7 . X O . X . O .
+8 . . O . O X . O
+Computer X plays at 5, 1.
+  1 2 3 4 5 6 7 8
+1 . X O . . X X X
+2 . . O O X O X X
+3 . . O X O X X .
+4 O . O O O X . O
+5 X X X X X X O O
+6 . . O X O O . O
+7 . X O . X . O .
+8 . . O . O X . O
+Computer O plays at 3, 8.
+  1 2 3 4 5 6 7 8
+1 . X O . . X X X
+2 . . O O X O X X
+3 . . O X O O O O
+4 O . O O O X . O
+5 X X X X X X O O
+6 . . O X O O . O
+7 . X O . X . O .
+8 . . O . O X . O
+Computer X plays at 7, 8.
+  1 2 3 4 5 6 7 8
+1 . X O . . X X X
+2 . . O O X O X X
+3 . . O X O O O X
+4 O . O O O X . X
+5 X X X X X X O X
+6 . . O X O O . X
+7 . X O . X . O X
+8 . . O . O X . O
+Computer O plays at 8, 7.
+  1 2 3 4 5 6 7 8
+1 . X O . . X X X
+2 . . O O X O X X
+3 . . O X O O O X
+4 O . O O O X . X
+5 X X X X X X O X
+6 . . O X O O . X
+7 . X O . X . O X
+8 . . O . O O O O
+Computer X plays at 6, 7.
+  1 2 3 4 5 6 7 8
+1 . X O . . X X X
+2 . . O O X O X X
+3 . . O X O O O X
+4 O . O O O X . X
+5 X X X X X X O X
+6 . . O X X X X X
+7 . X O . X . O X
+8 . . O . O O O O
+Computer O plays at 7, 6.
+  1 2 3 4 5 6 7 8
+1 . X O . . X X X
+2 . . O O X O X X
+3 . . O X O O O X
+4 O . O O O O . X
+5 X X X O X O O X
+6 . . O X O O X X
+7 . X O . X O O X
+8 . . O . O O O O
+Computer X plays at 2, 2.
+  1 2 3 4 5 6 7 8
+1 . X O . . X X X
+2 . X X X X O X X
+3 . . X X O O O X
+4 O . O X O O . X
+5 X X X O X O O X
+6 . . O X O O X X
+7 . X O . X O O X
+8 . . O . O O O O
+Computer O plays at 3, 2.
+  1 2 3 4 5 6 7 8
+1 . X O . . X X X
+2 . X X X X O X X
+3 . O O O O O O X
+4 O . O X O O . X
+5 X X X O X O O X
+6 . . O X O O X X
+7 . X O . X O O X
+8 . . O . O O O O
+Computer X plays at 4, 7.
+  1 2 3 4 5 6 7 8
+1 . X O . . X X X
+2 . X X X X O X X
+3 . O O O O X X X
+4 O . O X X X X X
+5 X X X O X O X X
+6 . . O X O O X X
+7 . X O . X O O X
+8 . . O . O O O O
+Computer O plays at 3, 1.
+  1 2 3 4 5 6 7 8
+1 . X O . . X X X
+2 . O X X X O X X
+3 O O O O O X X X
+4 O . O X X X X X
+5 X X X O X O X X
+6 . . O X O O X X
+7 . X O . X O O X
+8 . . O . O O O O
+Computer X plays at 2, 1.
+  1 2 3 4 5 6 7 8
+1 . X O . . X X X
+2 X X X X X O X X
+3 X O O O O X X X
+4 X . O X X X X X
+5 X X X O X O X X
+6 . . O X O O X X
+7 . X O . X O O X
+8 . . O . O O O O
+Computer O plays at 7, 1.
+  1 2 3 4 5 6 7 8
+1 . X O . . X X X
+2 X X X X X O X X
+3 X O O O O X X X
+4 X . O X X X X X
+5 X X X O X O X X
+6 . . O X O O X X
+7 O O O . X O O X
+8 . . O . O O O O
+Computer X plays at 8, 2.
+  1 2 3 4 5 6 7 8
+1 . X O . . X X X
+2 X X X X X O X X
+3 X O O O O X X X
+4 X . O X X X X X
+5 X X X O X O X X
+6 . . O X O O X X
+7 O O X . X O O X
+8 . X O . O O O O
+Computer O plays at 6, 2.
+  1 2 3 4 5 6 7 8
+1 . X O . . X X X
+2 X X X X X O X X
+3 X O O O O X X X
+4 X . O O X X X X
+5 X X O O X O X X
+6 . O O X O O X X
+7 O O X . X O O X
+8 . X O . O O O O
+Computer X plays at 4, 2.
+  1 2 3 4 5 6 7 8
+1 . X O . . X X X
+2 X X X X X O X X
+3 X X X O O X X X
+4 X X X X X X X X
+5 X X X O X O X X
+6 . O O X O O X X
+7 O O X . X O O X
+8 . X O . O O O O
+Computer O plays at 1, 5.
+  1 2 3 4 5 6 7 8
+1 . X O . O X X X
+2 X X X X O O X X
+3 X X X O O X X X
+4 X X X X X X X X
+5 X X X O X O X X
+6 . O O X O O X X
+7 O O X . X O O X
+8 . X O . O O O O
+Computer X plays at 8, 4.
+  1 2 3 4 5 6 7 8
+1 . X O . O X X X
+2 X X X X O O X X
+3 X X X O O X X X
+4 X X X X X X X X
+5 X X X O X O X X
+6 . O O X O O X X
+7 O O X . X O O X
+8 . X X X O O O O
+Computer O plays at 8, 1.
+  1 2 3 4 5 6 7 8
+1 . X O . O X X X
+2 X X X X O O X X
+3 X X X O O X X X
+4 X X X X X X X X
+5 X X X O X O X X
+6 . O O X O O X X
+7 O O X . X O O X
+8 O O O O O O O O
+Computer X plays at 7, 4.
+  1 2 3 4 5 6 7 8
+1 . X O . O X X X
+2 X X X X O O X X
+3 X X X O O X X X
+4 X X X X X X X X
+5 X X X O X X X X
+6 . O X X X O X X
+7 O O X X X O O X
+8 O O O O O O O O
+Computer O plays at 1, 4.
+  1 2 3 4 5 6 7 8
+1 . X O O O X X X
+2 X X X O O O X X
+3 X X X O O X X X
+4 X X X X X X X X
+5 X X X O X X X X
+6 . O X X X O X X
+7 O O X X X O O X
+8 O O O O O O O O
+Computer X plays at 6, 1.
+  1 2 3 4 5 6 7 8
+1 . X O O O X X X
+2 X X X O O O X X
+3 X X X O O X X X
+4 X X X X X X X X
+5 X X X O X X X X
+6 X X X X X O X X
+7 O O X X X O O X
+8 O O O O O O O O
+Computer O plays at 1, 1.
+  1 2 3 4 5 6 7 8
+1 O O O O O X X X
+2 O O X O O O X X
+3 O X O O O X X X
+4 O X X O X X X X
+5 O X X O O X X X
+6 O X X X X O X X
+7 O O X X X O O X
+8 O O O O O O O O
+Computer X has no valid moves.
+Computer O has no valid moves.
+Game over. 
+X has 31 disks. O has 33 disks. O wins.
+
+real	1m0.396s
+user	7m55.628s
+sys	0m6.527s
