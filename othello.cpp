@@ -275,44 +275,44 @@ void EndGame(Board b)
 }
 
 // Added Negamax Algorithm
-int NegaMaxAlgo(Board b, int color, int depth)
-{
-    Board legal_moves_b, legal_moves_w;
-    if (depth == 0 || ((b.disks[X_BLACK] | b.disks[O_WHITE]) == 0xFFFFFFFFFFFFFFFF) || 
-        (EnumerateLegalMoves(b, X_BLACK, &legal_moves_b) == 0 && EnumerateLegalMoves(b, O_WHITE, &legal_moves_w) == 0)){
+// Optimized NegaMax with Parallel Recursive Calls
+int NegaMaxAlgo(Board b, int color, int depth) {
+  Board legal_moves_b, legal_moves_w;
+  
+  // Base case: return evaluation score if depth limit reached or game over
+  if (depth == 0 || ((b.disks[X_BLACK] | b.disks[O_WHITE]) == 0xFFFFFFFFFFFFFFFF) || 
+      (EnumerateLegalMoves(b, X_BLACK, &legal_moves_b) == 0 && EnumerateLegalMoves(b, O_WHITE, &legal_moves_w) == 0)) {
       return CountBitsOnBoard(&b, color) - CountBitsOnBoard(&b, OTHERCOLOR(color));
-    }
+  }
 
-    Board legal_moves;
+  Board legal_moves;
+  int num_moves = EnumerateLegalMoves(b, color, &legal_moves);
 
-    int num_moves = EnumerateLegalMoves(b, color, &legal_moves);
+  // If no legal moves, switch turns and negate score
+  if (num_moves == 0) {
+      return -NegaMaxAlgo(b, OTHERCOLOR(color), depth - 1);
+  }
 
-    if(num_moves == 0)
-    {
-      return - NegaMaxAlgo(b, OTHERCOLOR(color), depth - 1);
-    }
+  cilk::reducer_max<int> maxScore(INT_MIN);
 
-
-
-    // cilk reducer for maxscore.
-    cilk::reducer_max<int> maxScore(INT_MIN);
-
-
-    cilk_for(int row = 1; row <= 8; row++) {
+  // Parallelize recursive calls instead of loop
+  cilk_for(int row = 1; row <= 8; row++) {
       for (int col = 1; col <= 8; col++) {
           if (legal_moves.disks[color] & BOARD_BIT(row, col)) {
-              printf("Checking move at %d, %d\n", row, col); // Add debug print
               Board next = b;
               Move m1 = {row, col};
               PlaceOrFlip(m1, &next, color);
               FlipDisks(m1, &next, color, 0, 1);
-              int score = -NegaMaxAlgo(next, OTHERCOLOR(color), depth - 1);
+              
+              // Spawn parallel recursive calls
+              int score = cilk_spawn -NegaMaxAlgo(next, OTHERCOLOR(color), depth - 1);
               maxScore.calc_max(score);
           }
       }
   }
-  
-    return maxScore.get_value(); // return the best score.
+  cilk_sync; // Ensure all recursive calls complete
+
+  return maxScore.get_value(); // Return best score
 }
 
 
