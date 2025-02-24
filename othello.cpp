@@ -275,7 +275,6 @@ void EndGame(Board b)
 }
 
 // Added Negamax Algorithm
-// Optimized NegaMax with Parallel Recursive Calls
 int NegaMaxAlgo(Board b, int color, int depth) {
   Board legal_moves_b, legal_moves_w;
   
@@ -295,7 +294,6 @@ int NegaMaxAlgo(Board b, int color, int depth) {
 
   cilk::reducer_max<int> maxScore(INT_MIN);
 
-  // Parallelize recursive calls instead of loop
   cilk_for(int row = 1; row <= 8; row++) {
       for (int col = 1; col <= 8; col++) {
           if (legal_moves.disks[color] & BOARD_BIT(row, col)) {
@@ -303,17 +301,20 @@ int NegaMaxAlgo(Board b, int color, int depth) {
               Move m1 = {row, col};
               PlaceOrFlip(m1, &next, color);
               FlipDisks(m1, &next, color, 0, 1);
+
+              // Spawn parallel recursive call correctly
+              int score = cilk_spawn NegaMaxAlgo(next, OTHERCOLOR(color), depth - 1);
+              score = -score;  // Negate the result after spawning
               
-              // Spawn parallel recursive calls
-              int score = cilk_spawn -NegaMaxAlgo(next, OTHERCOLOR(color), depth - 1);
               maxScore.calc_max(score);
           }
       }
   }
-  cilk_sync; // Ensure all recursive calls complete
+  cilk_sync; // Ensure all parallel tasks complete before returning
 
   return maxScore.get_value(); // Return best score
 }
+
 
 
 // Added Computer Turn Function
