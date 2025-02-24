@@ -297,13 +297,15 @@ int NegaMaxAlgo(Board b, int color, int depth)
     // cilk reducer for maxscore.
     cilk::reducer_max<int> maxScore(INT_MIN);
 
+
     cilk_for(int row = 1; row <= 8; row++) {
       for (int col = 1; col <= 8; col++) {
           if (legal_moves.disks[color] & BOARD_BIT(row, col)) {
               printf("Checking move at %d, %d\n", row, col); // Add debug print
               Board next = b;
               Move m1 = {row, col};
-              MakeMove(&next, m1, color);
+              PlaceOrFlip(m1, &next, color);
+              FlipDisks(m1, &next, color, 0, 1);
               int score = -NegaMaxAlgo(next, OTHERCOLOR(color), depth - 1);
               maxScore.calc_max(score);
           }
