@@ -297,21 +297,19 @@ int NegaMaxAlgo(Board b, int color, int depth)
     // cilk reducer for maxscore.
     cilk::reducer_max<int> maxScore(INT_MIN);
 
-    cilk_for(int row = 8; row >= 1; row--)
-    {
-      for (int col = 8; col >= 1; col--)
-      {
-        if(legal_moves.disks[color] & BOARD_BIT(row, col)){
-          Board next = b;
-          Move m1 = {row, col};
-          PlaceOrFlip(m1, &next, color);
-          FlipDisks(m1, &next, color, 0, 1);
-          int score = -NegaMaxAlgo(next, OTHERCOLOR(color), depth - 1); // recursive call to negamax algorithm.
-          maxScore.calc_max(score); // update the max score.
-
-        }
+    cilk_for(int row = 1; row <= 8; row++) {
+      for (int col = 1; col <= 8; col++) {
+          if (legal_moves.disks[color] & BOARD_BIT(row, col)) {
+              printf("Checking move at %d, %d\n", row, col); // Add debug print
+              Board next = b;
+              Move m1 = {row, col};
+              MakeMove(&next, m1, color);
+              int score = -NegaMaxAlgo(next, OTHERCOLOR(color), depth - 1);
+              maxScore.calc_max(score);
+          }
       }
-    }
+  }
+  
     return maxScore.get_value(); // return the best score.
 }
 
@@ -345,6 +343,8 @@ int CompTurn(Board *b, int color, int depth) {
           }
       }
   }
+
+  
 
   if (bestMove.row != -1 && bestMove.col != -1) {
       printf("Computer %c plays at %d, %d.\n", "XO"[color], bestMove.row, bestMove.col);
